@@ -2,6 +2,7 @@ from benchopt import BaseObjective
 
 from torch.utils.data import DataLoader
 
+from sklearn.metrics import make_scorer
 from nidl.metrics.regression import pearson_r, r2_score, median_absolute_error
 
 
@@ -12,7 +13,6 @@ class Objective(BaseObjective):
     name = "Eval SSL SynthSeg"
     url = "https://github.com/Duplums/eval-ssl-synthseg"
     parameters = {
-        'random_state': [32],
         'batch_size': [64],
     }
 
@@ -30,9 +30,9 @@ class Objective(BaseObjective):
 
     def evaluate_result(self, model):
         scoring = {
-            'r2_score': r2_score,
-            'mae': median_absolute_error,
-            'pearson_r': pearson_r
+            'r2_score': make_scorer(r2_score),
+            'mae': make_scorer(median_absolute_error),
+            'pearson_r': make_scorer(pearson_r)
         }
 
         dataloader = DataLoader(
