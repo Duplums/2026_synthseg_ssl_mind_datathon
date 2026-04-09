@@ -59,7 +59,6 @@ REQUIREMENTS:
     - torchio
     - numpy
 
-AUTHOR: Davide Chirico
 ================================================================================
 """
 
@@ -71,7 +70,6 @@ import torch
 import torchio as tio
 import glob
 import torch.nn.functional as F
-import numpy as np
 
 # =============================================================================
 # GPU SETUP
