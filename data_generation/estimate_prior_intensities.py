@@ -39,17 +39,17 @@ import os
 import sys
 import glob
 from argparse import ArgumentParser
-import sys
-sys.path.append("..")
-from legacy.SynthSeg.SynthSeg.estimate_priors import build_intensity_stats
+sys.path.append("../legacy/SynthSeg")
+from SynthSeg.estimate_priors import build_intensity_stats
 
-def batch_extract(original_base_dir, segmented_base_dir, out_dir):
+def batch_extract(original_base_dir, segmented_base_dir, labels_list, out_dir):
     """
     Batch extraction of tissue statistics from all MRI images found recursively.
     
     Args:
         original_base_dir: Base directory with original MRI images
         segmented_base_dir: Base directory with segmentation masks (parallel structure)
+        labels_list: Path to npy file listing all label values to extract statistics from.
         out_dir: Output directory for npy files
     """
     
@@ -76,12 +76,11 @@ def batch_extract(original_base_dir, segmented_base_dir, out_dir):
     print(f"{'='*80}\n")
     
     # Extract statistics from all images
-    estimation_labels = '../legacy/SynthSeg/data/labels_classes_priors/generation_labels.npy'
     prior_means, prior_stds = build_intensity_stats(
         original_base_dir,
         segmented_base_dir,
         out_dir,
-        estimation_labels=estimation_labels,
+        estimation_labels=labels_list,
     )
     
     if len(prior_means) == 0:
@@ -117,6 +116,13 @@ def main():
     )
     
     parser.add_argument(
+        "--labels_list",
+        type=str,
+        required=True,
+        help="Path to npy file listing all label values to extract statistics from"
+    )
+    
+    parser.add_argument(
         "--out_dir",
         type=str,
         required=True,
@@ -139,6 +145,7 @@ def main():
     batch_extract(
         args.original_base_dir, 
         args.segmented_base_dir, 
+        args.labels_list,
         args.out_dir,
     )
 

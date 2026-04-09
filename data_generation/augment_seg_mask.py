@@ -330,7 +330,7 @@ def augment_batch(base_dir, pattern='*_seg.nii.gz', exclude_patterns=None, num_v
             rel_path = seg_file
         
         print(f"  [{idx}/{len(seg_files)}] {rel_path}")
-        output_dir = seg_file.parent
+        output_dir = seg_file.parent / "aug_segmentations"
         
         # Check if all versions already exist (skip if complete)
         stem = seg_file.stem.replace(".nii", "")
